@@ -9,6 +9,12 @@ function somenteDigitos(valor) {
 }
 
 function telefoneValido(valor) {
+  if (
+    typeof valor !== "string" ||
+    !/^(?:\([1-9]{2}\)|[1-9]{2}) *\d{4,5}(?:-| *)\d{4}$/.test(valor.trim())
+  ) {
+    return false;
+  }
   const digitos = somenteDigitos(valor);
   if (!/^[1-9][1-9]\d{8,9}$/.test(digitos)) return false;
   if (digitos.length === 11 && digitos[2] !== "9") return false;
@@ -29,7 +35,9 @@ function emailValido(valor) {
 }
 
 function dataNascimentoValida(valor) {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(valor)) return false;
+  if (typeof valor !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(valor)) {
+    return false;
+  }
   const [ano, mes, dia] = valor.split("-").map(Number);
   const data = new Date(Date.UTC(ano, mes - 1, dia));
   const existeNoCalendario =
