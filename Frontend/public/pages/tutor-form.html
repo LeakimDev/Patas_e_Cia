@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patas &amp; Cia — Tutor</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>" />
+</head>
+<body>
+  <main class="pagina">
+    <nav class="nav-voltar">
+      <button id="btn-voltar" class="btn btn--ghost">← Voltar</button>
+    </nav>
+
+    <header class="pagina-header">
+      <h1 id="titulo-pagina" class="pagina-header__titulo">Novo Tutor</h1>
+    </header>
+
+    <div class="form-card">
+      <form id="form-tutor" novalidate>
+        <div class="form-grid">
+          <div class="form-grupo form-grupo--full">
+            <label for="nome">Nome completo <span class="obrigatorio">*</span></label>
+            <input type="text" id="nome" name="nome" placeholder="Ex: Maria Oliveira" autocomplete="name" />
+            <span id="erro-nome" class="campo-erro" role="alert"></span>
+          </div>
+
+          <div class="form-grupo">
+            <label for="telefone">Telefone <span class="obrigatorio">*</span></label>
+            <input type="tel" id="telefone" name="telefone" placeholder="(11) 91234-5678" autocomplete="tel" />
+            <span id="erro-telefone" class="campo-erro" role="alert"></span>
+          </div>
+
+          <div class="form-grupo">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" placeholder="maria@email.com" autocomplete="email" />
+            <span id="erro-email" class="campo-erro" role="alert"></span>
+          </div>
+
+          <div class="form-grupo form-grupo--full">
+            <label for="endereco">Endereço</label>
+            <input type="text" id="endereco" name="endereco" placeholder="Rua, número, bairro, cidade/UF" autocomplete="street-address" />
+            <span id="erro-endereco" class="campo-erro" role="alert"></span>
+          </div>
+        </div>
+
+        <div class="form-acoes">
+          <button type="submit" id="btn-submit" class="btn btn--primary btn--lg">Cadastrar Tutor</button>
+          <button type="button" id="btn-cancelar" class="btn btn--ghost">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <script type="module" src="../js/pages/tutorFormPage.js"></script>
+</body>
+</html>
