@@ -40,7 +40,9 @@ async function carregarTutor() {
     campoEmail.value = tutor.email ?? "";
     campoEndereco.value = tutor.endereco ?? "";
   } catch (err) {
-    mensagens.erro(`Não foi possível carregar os dados do tutor: ${err.message}`);
+    mensagens.erro(
+      `Não foi possível carregar os dados do tutor: ${err.message}`,
+    );
   }
 }
 
@@ -57,14 +59,22 @@ function voltarParaLista() {
   window.location.href = PAGINA_LISTA;
 }
 
+function formatarTelefoneDigitado(digitos) {
+  if (digitos.length > 10) {
+    return `(${digitos.slice(0, 2)}) ${digitos.slice(2, 7)}-${digitos.slice(7)}`;
+  }
+  if (digitos.length > 6) {
+    return `(${digitos.slice(0, 2)}) ${digitos.slice(2, 6)}-${digitos.slice(6)}`;
+  }
+  if (digitos.length > 2) return `(${digitos.slice(0, 2)}) ${digitos.slice(2)}`;
+  if (digitos.length > 0) return `(${digitos}`;
+  return "";
+}
+
 function aplicarMascaraTelefone(input) {
   input.addEventListener("input", () => {
-    let v = input.value.replace(/\D/g, "");
-    if (v.length > 11) v = v.slice(0, 11);
-    if (v.length > 7) v = `(${v.slice(0, 2)}) ${v.slice(2, 7)}-${v.slice(7)}`;
-    else if (v.length > 2) v = `(${v.slice(0, 2)}) ${v.slice(2)}`;
-    else if (v.length > 0) v = `(${v}`;
-    input.value = v;
+    const digitos = input.value.replace(/\D/g, "").slice(0, 11);
+    input.value = formatarTelefoneDigitado(digitos);
   });
 }
 
