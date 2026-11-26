@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: patas-e-cia
+    runtime: node
+    plan: free
+    buildCommand: npm ci --prefix Backend
+    startCommand: npm start --prefix Backend
+    healthCheckPath: /saude
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: SEED_DEMO
+        value: "true"
