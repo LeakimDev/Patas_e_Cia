@@ -1,72 +1,110 @@
-# Clínica Patas & Cia
+# 🐾 Clínica Patas & Cia
 
-Projeto da disciplina N695 — Desenvolvimento de Plataformas Web, Grupo 2.
-A API gerencia tutores e animais. Cada animal pertence a um tutor, que pode
-ter vários animais.
+Sistema Web da **Clínica Veterinária Patas & Cia** (Cenário 1), desenvolvido para a disciplina
+**N695 — Desenvolvimento de Plataformas Web** (Universidade de Fortaleza).
 
-## Executar localmente
+Permite cadastrar **tutores** e os **animais** de cada tutor. Um tutor pode ter vários animais;
+cada animal pertence a um único tutor.
 
-Use o Node.js 24 LTS, que inclui o módulo `node:sqlite`.
+- **Aplicação publicada:** _(colar o link aqui)_
+- **Repositório:** _[github.com/LeakimDev/Patas_E_Cia](https://github.com/LeakimDev/Patas_e_Cia)_
+
+## Tecnologias
+
+| Camada       | Tecnologia                                          |
+| ------------ | --------------------------------------------------- |
+| Interface    | HTML, CSS e JavaScript (módulos ES), sem framework  |
+| Serviço Web  | Node.js + Express (API REST em JSON)                |
+| Persistência | Banco de dados SQLite (módulo nativo `node:sqlite`) |
+| Hospedagem   | Render                                              |
+
+## Estrutura do repositório
+
+```
+Backend/    API REST, regras de negócio, validações e acesso ao banco
+  src/routes · controllers · services · validators · repositories · database
+  test/     teste de integração da API
+Frontend/   interface (HTML/CSS/JS) e servidor de desenvolvimento
+  public/pages · css · js/(api · pages · ui · validators)
+render.yaml configuração de publicação
+```
+
+O Backend também entrega os arquivos de `Frontend/public`. Por isso a aplicação publicada precisa
+de **um único serviço**.
+
+## Como rodar
+
+Requisito: **Node.js 22.13 ou superior** (recomendado o 24 LTS), que traz o módulo `node:sqlite`.
+O aviso "ExperimentalWarning: SQLite" no terminal é normal.
+
+**Modo simples (API + interface em um só servidor)**
 
 ```sh
+cd Backend
 npm ci
 npm start
 ```
 
-A API fica em `http://localhost:3000/api` por padrão. Para verificar se o
-servidor está disponível, acesse `GET /saude`.
+Abra http://localhost:3000
 
-| Variável | Valor padrão | Uso |
-| --- | --- | --- |
-| `PORT` | `3000` | Porta HTTP do Express |
-| `DB_PATH` | `data/clinica.db` | Caminho do arquivo SQLite |
-
-O servidor cria o banco e as tabelas na inicialização. Na hospedagem, aponte
-`DB_PATH` para um volume gravável e persistente. Use dados fictícios na
-demonstração pública.
-
-## Rotas da API
-
-| Método | Caminho | Operação |
-| --- | --- | --- |
-| GET | `/api/tutores` | Lista tutores, com busca opcional em `?busca=` |
-| POST | `/api/tutores` | Cadastra um tutor |
-| GET | `/api/tutores/:id` | Consulta um tutor |
-| PUT | `/api/tutores/:id` | Atualiza um tutor |
-| DELETE | `/api/tutores/:id` | Exclui um tutor sem animais cadastrados |
-| GET | `/api/tutores/:tutorId/animais` | Lista os animais do tutor |
-| POST | `/api/tutores/:tutorId/animais` | Cadastra um animal no tutor |
-| GET | `/api/tutores/:tutorId/animais/:id` | Consulta um animal do tutor |
-| PUT | `/api/tutores/:tutorId/animais/:id` | Atualiza um animal do tutor |
-| DELETE | `/api/tutores/:tutorId/animais/:id` | Exclui um animal do tutor |
-
-Envie JSON com `Content-Type: application/json` em `POST` e `PUT`.
-`PUT` recebe os campos obrigatórios e substitui os dados editáveis do
-registro. Campos opcionais omitidos ficam como `null`.
-
-- **Tutor:** `nome` e `telefone` são obrigatórios. O telefone aceita, por
-  exemplo, `(85) 98888-7777`. `email` e `endereco` são opcionais.
-- **Animal:** `nome` e `especie` são obrigatórios. `raca`,
-  `dataNascimento` (AAAA-MM-DD) e `observacoes` são opcionais. Nas respostas,
-  a data vem em `data_nascimento` e o vínculo em `tutor_id`.
-- **Respostas:** criações retornam `201`, exclusões retornam `204` e
-  validações retornam `400` com `erro` e, quando aplicável, `detalhes` por
-  campo. Recursos ausentes ou animais de outro tutor retornam `404`.
-  Excluir um tutor que ainda tenha animais retorna `409`.
-
-## Organização do código
-
-- `src/routes` e `src/controllers`: entrada HTTP e respostas.
-- `src/services` e `src/validators`: regras de negócio e validações.
-- `src/repositories` e `src/database`: consultas e persistência no SQLite.
-- `public`: diretório servido pelo Express para os arquivos da interface.
-
-## Testes
+**Modo desenvolvimento (dois servidores, opcional)**
 
 ```sh
-npm test
+# terminal 1
+cd Backend && npm ci && npm start
+# terminal 2
+cd Frontend && npm ci && npm start
 ```
 
-O teste de integração percorre o CRUD das duas entidades usando um banco
-SQLite em memória. Ele verifica a validação, o vínculo do animal com o tutor
-e a regra que impede excluir tutores com animais.
+Abra http://localhost:3001 (o Frontend encaminha `/api` para o Backend na porta 3000).
+
+| Variável    | Padrão                    | Uso                                                         |
+| ----------- | ------------------------- | ----------------------------------------------------------- |
+| `PORT`      | `3000`                    | Porta HTTP do Backend                                       |
+| `DB_PATH`   | `Backend/data/clinica.db` | Arquivo do banco SQLite                                     |
+| `SEED_DEMO` | _(vazio)_                 | Com `true`, insere dados fictícios se o banco estiver vazio |
+
+Comandos úteis no `Backend/`: `npm test` (testes), `npm run seed` (dados de exemplo), `npm run dev`.
+
+## API e regras de validação
+
+As rotas, os formatos e os códigos de resposta estão em [`Backend/README.md`](Backend/README.md).
+Regras do cenário implementadas (no navegador e no servidor):
+
+- campos obrigatórios (tutor: nome e telefone; animal: nome e espécie);
+- telefone em formato válido (celular `(85) 98888-7777` ou fixo `(85) 3222-1111`);
+- e-mail válido quando informado e data de nascimento real e não futura;
+- **não é possível excluir um tutor que ainda tenha animais** (HTTP 409; o banco também bloqueia com
+  chave estrangeira `ON DELETE RESTRICT`).
+
+## Publicação (Render)
+
+1. Repositório público no GitHub.
+2. No Render: **New → Blueprint** (usa o `render.yaml`) ou **New → Web Service** com
+   Build `npm ci --prefix Backend`, Start `npm start --prefix Backend`, health check `/saude` e
+   variáveis `NODE_VERSION=24` e `SEED_DEMO=true`.
+
+> No plano gratuito o disco é temporário: o arquivo do banco é recriado quando o serviço reinicia.
+> `SEED_DEMO=true` repõe os dados fictícios. O serviço "dorme" sem acessos, e a primeira visita demora.
+
+## Equipe
+
+| Nome completo                    | Matrícula |
+| -------------------------------- | --------- |
+| _Mikael Monteiro Gomes_          | _2640566_ |
+| _Lucas Soares de Oliveira_       | _2631685_ |
+| _Madson Luiz Bastos Maia_        | _2524832_ |
+| _Vitor Emanuel de Paiva Pereira_ | _2512882_ |
+| _Matias Pereira Vieira_          | _2640885_ |
+| _Michele Costa Araújo_           | _2524917_ |
+
+## Uso de IA generativa
+
+_A equipe declara que utilizou IA generativa (Claude, da Anthropic) em duas frentes.
+No desenvolvimento: a estrutura inicial do projeto (organização em camadas, serviço Web,
+acesso ao banco SQLite, validações, tratamento de erros, teste de integração e a primeira
+versão da interface) foi gerada com apoio da ferramenta e depois adaptada pela equipe, que
+fizeram algumas reestruturações no projeto com separação entre Frontend e Backend, integração dos serviços, ajustes no CRUD de animais e atualização dos testes e validações. Na documentação: a primeira versão
+deste relatório e as orientações de instalação, depuração de erros e publicação. O código foi
+executado e testado pela equipe. Os integrantes que participaram Madson Luiz, Lucas Soares e Mikael Monteiro compreendem e
+sabem explicar o código entregue._

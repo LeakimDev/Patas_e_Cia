@@ -22,7 +22,6 @@ public/
     ui/          renderização e mensagens
     api/         acesso ao serviço Web (fetch)
     validators/  regras de validação de entrada
-    mock/        servidor simulado (temporário, até a API real ficar pronta)
 server.js        servidor Express
 ```
 
@@ -41,4 +40,4 @@ O servidor do Frontend encaminha automaticamente as requisições `/api` para o 
 
 ## Equipe
 
-(preencher com os integrantes)
+Veja a tabela de integrantes no [README da raiz](../README.md).
