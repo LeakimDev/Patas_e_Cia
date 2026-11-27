@@ -6,7 +6,7 @@ Sistema Web da **Clínica Veterinária Patas & Cia** (Cenário 1), desenvolvido 
 Permite cadastrar **tutores** e os **animais** de cada tutor. Um tutor pode ter vários animais;
 cada animal pertence a um único tutor.
 
-- **Aplicação publicada:** _(colar o link aqui)_
+- **Aplicação publicada:** _[https://patas-e-cia-tj7c.onrender.com](https://patas-e-cia-tj7c.onrender.com)_
 - **Repositório:** _[github.com/LeakimDev/Patas_E_Cia](https://github.com/LeakimDev/Patas_e_Cia)_
 
 ## Tecnologias
